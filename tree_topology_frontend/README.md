@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tree Topology Reconstruction Tool (Client-only)
 
-## Getting Started
+A single-screen Next.js (App Router) app that reconstructs a tree’s parent array from a laminar family of subtree sets and visualizes it as an SVG. All logic runs in the browser—no backend.
 
-First, run the development server:
+## Run locally
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Install deps: `npm install`
+- Dev server: `npm run dev`
+- Open http://localhost:3000
+
+## Input formats
+
+You can paste the subtree sets in either format:
+
+1) JSON array of arrays:
+```
+[[1,2,3],[2],[3]]
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2) Newline-separated sets (commas or spaces):
+```
+1,2,3
+2
+3
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Assumptions:
+- Nodes are labeled `1..n` contiguously.
+- There are exactly `n` sets (one per node).
+- Each set `S_i` includes `i` (self-inclusion).
+- The family is laminar (any two sets are nested or disjoint).
+- Exactly one set equals the universe of nodes (the root’s subtree).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Output
 
-## Learn More
+- Parent array: `parents[i-1]` is the parent of node `i`; the root has `-1`.
+- SVG visualization: layered layout by depth, root highlighted.
 
-To learn more about Next.js, take a look at the following resources:
+## Theme
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Ocean Professional:
+- Primary `#2563EB`
+- Accent `#F59E0B`
+- Error `#EF4444`
+- Background `#f9fafb`
+- Surface `#ffffff`
+- Text `#111827`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Styling uses Tailwind CSS utility classes and small component classes defined in `globals.css`.
